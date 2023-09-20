@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d0319b399c4944043ade8925fad20c92
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Lama Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 10e74b27e5731814394b169e646bf502, type: 3}
+  - {fileID: 12800000, guid: 204580155c13bb747b37248565e8f408, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

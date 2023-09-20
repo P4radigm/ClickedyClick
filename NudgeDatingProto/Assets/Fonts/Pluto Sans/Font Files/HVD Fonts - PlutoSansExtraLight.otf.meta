@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: c634374a81438a343ae94ce26cc18b5e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Pluto Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 31f815b314acc65478e4c6b9782fa1f4, type: 3}
+  - {fileID: 12800000, guid: 80ba5057fa44410428200ea9491d31a8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

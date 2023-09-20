@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: 35dc5c61dfdf52642aae45f0dde66e0c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Pluto
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 33cbdac3ea8cb2c4caaf70cfb970522b, type: 3}
+  - {fileID: 12800000, guid: 7272b790b899c2544a70ff0e4efb0c5b, type: 3}
+  - {fileID: 12800000, guid: b47fd02e96f1ee64c9cd003fdb4f8cec, type: 3}
+  - {fileID: 12800000, guid: c3c9507c2a9ea0149bf5c52998b30df2, type: 3}
+  - {fileID: 12800000, guid: b11f68fbf57ec824e9e6c8224c84bfb7, type: 3}
+  - {fileID: 12800000, guid: 73f2fee63a3672d499ed72b6c5deade3, type: 3}
+  - {fileID: 12800000, guid: 016d92eb9eb23124888d3c9cf6a28765, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
