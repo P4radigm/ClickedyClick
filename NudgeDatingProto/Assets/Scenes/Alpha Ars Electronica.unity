@@ -19525,8 +19525,8 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   pivot: 1
-  width: 1919.9999
-  height: 1019.9999
+  width: 1920.0001
+  height: 1020
   type: 0
   cornerRadiusMode: 0
   cornerRadii: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
@@ -50427,7 +50427,7 @@ MonoBehaviour:
   stencilWriteMask: 255
   pivot: 1
   width: 5
-  height: 254.87396
+  height: 254.87402
   type: 1
   cornerRadiusMode: 0
   cornerRadii: {x: 50, y: 50, z: 50, w: 50}
@@ -64053,7 +64053,7 @@ MonoBehaviour:
   userIdElement: {fileID: 261502189}
   idText: {fileID: 1774534037}
   idCanvas: {fileID: 240998227}
-  idOffset: {x: 6, y: -93}
+  idOffset: {x: 6, y: -65}
   notificationSpawnParent: {fileID: 2028158216}
   notificationPrefab: {fileID: 6212400561589724957, guid: d21bf89d819337f48b1097dfbf34a99f, type: 3}
   notificationOffset: {x: 0, y: 10}
