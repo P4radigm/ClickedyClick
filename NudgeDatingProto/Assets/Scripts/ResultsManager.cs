@@ -19,9 +19,9 @@ public class ResultsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleTextObject;
     [SerializeField] private TextMeshProUGUI thanksTextObjectOne;
     [SerializeField] private TextMeshProUGUI thanksTextObjectTwo;
-    [SerializeField][TextArea] private string titleText;
-    [SerializeField][TextArea] private string thanksTextOne;
-    [SerializeField][TextArea] private string thanksTextTwo;
+    [SerializeField][TextArea(0, 40)] private string titleText;
+    [SerializeField][TextArea(0, 40)] private string thanksTextOne;
+    [SerializeField][TextArea(0, 40)] private string thanksTextTwo;
     [SerializeField] private TextMeshProUGUI contactText;
     [SerializeField] private TextMeshProUGUI datingPoolText;
 
@@ -39,7 +39,7 @@ public class ResultsManager : MonoBehaviour
     private string htmlStart = @"
         <html>
             <head>
-                <title>clicked.click @ Ars Electronica</title>
+                <title>clickedy.click @ IMPAKT</title>
                   <style>
                     body {
                         font-family: Arial, Helvetica, sans-serif;
@@ -70,17 +70,17 @@ public class ResultsManager : MonoBehaviour
     private string nameAction;
 
     [SerializeField] private string subjectMain = "Email subject";
-    [SerializeField][TextArea] private string thanksParagraph;
-    [SerializeField][TextArea] private string connectParagraph;
-    [SerializeField][TextArea] private string addedParagraph;
-    [SerializeField][TextArea] private string endingParagraph;
+    [SerializeField][TextArea(0, 40)] private string thanksParagraph;
+    [SerializeField][TextArea(0, 40)] private string connectParagraph;
+    [SerializeField][TextArea(0, 40)] private string addedParagraph;
+    [SerializeField][TextArea(0, 40)] private string endingParagraph;
     [SerializeField] private string subjectOther = "Email subject";
-    [SerializeField][TextArea] private string connectedEmail;
+    [SerializeField][TextArea(0, 40)] private string connectedEmail;
 
 
     [SerializeField] private string fromAddressAction = "your_email_address";
     [SerializeField] private string subjectAction = "Email subject";
-    [SerializeField][TextArea] private string actionParagraph;
+    [SerializeField][TextArea(0, 40)] private string actionParagraph;
 
     private string matchedUserID;
 
