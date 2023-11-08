@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Shapes;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 [RequireComponent(typeof(ShapeRenderer))]
 public class ShapesOpacityAnimation : MonoBehaviour
