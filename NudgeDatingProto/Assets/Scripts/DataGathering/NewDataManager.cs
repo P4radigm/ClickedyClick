@@ -11,7 +11,11 @@ public class NewDataManager : MonoBehaviour
     public static NewDataManager instance = null;
 
     //private const string AlphanumericCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
+    [Space(30)]
+    public bool useFakeData;
+    public Averages fakeAverages;
+    public ProfileData[] fakeProfiles;
+    [Space(30)]
     public string saveFolderName;
     public string[] categoryStrings;
     public string[] platforms;
@@ -58,6 +62,7 @@ public class NewDataManager : MonoBehaviour
         public List<IntData> intDataLists = new();
         public List<StringData> stringDataLists = new();
         public List<VectorTwoData> vectorTwoDataLists = new();
+        public Vector2 screenResolution;
         public int pixelsScrolled;
         public float secondsHovered;
         public int totalClicks;
@@ -133,15 +138,32 @@ public class NewDataManager : MonoBehaviour
     public ProfileData GetProfileData(string id)
     {
         ProfileData data = new();
-        string filePath = Path.Combine(Application.persistentDataPath, saveFolderName, $"{id}.json");
+        
+        if (!useFakeData)
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, saveFolderName, $"{id}.json");
 
-        string jsonString = File.ReadAllText(filePath);
-        data = JsonUtility.FromJson<ProfileData>(jsonString);
+            string jsonString = File.ReadAllText(filePath);
+            data = JsonUtility.FromJson<ProfileData>(jsonString);
+        }
+        else
+        {
+            for (int i = 0; i < fakeProfiles.Length; i++)
+            {
+                if (fakeProfiles[i].id == id)
+                {
+                    data = fakeProfiles[i];
+                }
+            }
+        }
+
         return data;
     }
 
     public void SaveUserDataLocal(ProfileData dataToSave)
     {
+        if (useFakeData) { return; }
+
         if (dirtyData) { Debug.LogError($"Tried to add dirty data"); return; }
 
         //Get current time and add to data
@@ -207,15 +229,26 @@ public class NewDataManager : MonoBehaviour
     public Averages GetAverages()
     {
         Averages av = new();
-        string filePath = Path.Combine(Application.persistentDataPath, $"averages.json");
 
-        string jsonString = File.ReadAllText(filePath);
-        av = JsonUtility.FromJson<Averages>(jsonString);
+        if (!useFakeData)
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, $"averages.json");
+
+            string jsonString = File.ReadAllText(filePath);
+            av = JsonUtility.FromJson<Averages>(jsonString);
+        }
+        else
+        {
+            av = fakeAverages;
+        }
+
         return av;
     }
 
     public void AddToAverages()
     {
+        if (useFakeData) { return; }
+
         if(currentAverages == null)
         {
             currentAverages.averageCharacters = ownProfileData.totalCharacters;
@@ -241,6 +274,8 @@ public class NewDataManager : MonoBehaviour
 
     public void SaveNewAverages()
     {
+        if (useFakeData) { return; }
+
         string filePath = Path.Combine(Application.persistentDataPath, $"averages.json");
         File.WriteAllText(filePath, JsonUtility.ToJson(currentAverages));
         Debug.Log($"Saved averages to JSON at: {filePath}");

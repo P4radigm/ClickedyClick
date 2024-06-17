@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Alpha Ars Electronica.unity
-    guid: f50d48691f4d18f49967691e0d78fe50
+    path: Assets/Scenes/WebGL Demo.unity
+    guid: 65fc6bc9747c3334baefd41276d1b77c
   m_configObjects: {}

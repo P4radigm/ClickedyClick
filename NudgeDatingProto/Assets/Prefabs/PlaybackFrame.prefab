@@ -5975,7 +5975,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 60
+  m_SortingOrder: 400
   m_TargetDisplay: 0
 --- !u!114 &2432571190696548137
 MonoBehaviour:
@@ -19195,6 +19195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3488cfe0d1b74c84e8dd6d6d99d57c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaybackResolution: {x: 0, y: 0}
   currentFrame: 0
   paused: 1
   matchController: {fileID: 0}

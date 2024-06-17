@@ -24,8 +24,16 @@ public class CursorPlayback : MonoBehaviour
             if (controller.vectorDataPoints.Count > 0 && controller.intDataPoints.Count > 0)
             {
                 playbackCursorRenderer.sprite = cursorSprites[controller.intDataPoints[idState][controller.currentFrame]];
-                playbackCursor.anchoredPosition = controller.vectorDataPoints[idPositions][controller.currentFrame];
+                playbackCursor.anchoredPosition = NormalisePositions(controller.vectorDataPoints[idPositions][controller.currentFrame]);
             }
         }
+    }
+
+    private Vector2 NormalisePositions(Vector2 input)
+    {
+        float normalisedX = input.x / controller.PlaybackResolution.x * 1920f;
+        float normalisedY = input.y / controller.PlaybackResolution.y * 1080f;
+
+        return new Vector2 (normalisedX, normalisedY);
     }
 }

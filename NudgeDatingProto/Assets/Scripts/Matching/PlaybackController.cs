@@ -11,6 +11,7 @@ public class PlaybackController : MonoBehaviour
     public Dictionary<string, List<int>> intDataPoints;
     public Dictionary<string, List<string>> stringDataPoints;
     public Dictionary<string, List<Vector2>> vectorDataPoints;
+    public Vector2 PlaybackResolution;
 
     public int currentFrame;
     public bool paused = true;
@@ -58,6 +59,8 @@ public class PlaybackController : MonoBehaviour
 
         maxFrame = firstPair.Value.Count - 1;
         frameDuration = (1f / profileData.sampleRate);
+
+        PlaybackResolution = profileData.screenResolution;
 
         paused = true;
         currentFrame = 0;

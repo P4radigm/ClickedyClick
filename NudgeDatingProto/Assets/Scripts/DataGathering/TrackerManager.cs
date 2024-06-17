@@ -121,6 +121,7 @@ public class TrackerManager : MonoBehaviour
 
         //Others
         newDataManager.ownProfileData.sampleRate = sampleRate;
+        newDataManager.ownProfileData.screenResolution = new Vector2(Screen.width, Screen.height);
         newDataManager.ownProfileData.totalCharacters = totalCharactersTyped;
         newDataManager.ownProfileData.totalClicks = totalClicks;
         newDataManager.ownProfileData.pixelsScrolled = totalScrollDistance;

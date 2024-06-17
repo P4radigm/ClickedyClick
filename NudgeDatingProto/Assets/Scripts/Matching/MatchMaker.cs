@@ -86,13 +86,23 @@ public class MatchMaker : MonoBehaviour
 
     public void ScanFolder()
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, $"{dataManager.saveFolderName}");
-        string[] files = Directory.GetFiles(folderPath, "*.json");
-
-        foreach (string file in files)
+        if (!dataManager.useFakeData)
         {
-            string filename = Path.GetFileName(file);
-            availableFiles.Add(filename);
+            string folderPath = Path.Combine(Application.persistentDataPath, $"{dataManager.saveFolderName}");
+            string[] files = Directory.GetFiles(folderPath, "*.json");
+
+            foreach (string file in files)
+            {
+                string filename = Path.GetFileName(file);
+                availableFiles.Add(filename);
+            }
+        }
+        else
+        {
+            foreach (NewDataManager.ProfileData profile in dataManager.fakeProfiles)
+            {
+                availableFiles.Add(profile.id + ".JSON");
+            }
         }
     }
 
