@@ -127,7 +127,7 @@ public class TrackerVisual : MonoBehaviour
 
     private void UpdateIdTagPosition()
     {
-        userIdElement.anchoredPosition = new Vector2((Input.mousePosition.x + idOffset.x) / idCanvas.scaleFactor, (Input.mousePosition.y + idOffset.y) / idCanvas.scaleFactor);
+        userIdElement.anchoredPosition = new Vector2((Input.mousePosition.x + idOffset.x * Screen.width) / idCanvas.scaleFactor, (Input.mousePosition.y + idOffset.y * Screen.height) / idCanvas.scaleFactor);
     }
 
     private void CheckForMouseNotificationOutput()
@@ -227,7 +227,7 @@ public class TrackerVisual : MonoBehaviour
     {
         GameObject newNotification = Instantiate(notificationPrefab, notificationSpawnParent);
         RectTransform newNotificationT = newNotification.GetComponent<RectTransform>();
-        newNotificationT.anchoredPosition = new Vector2((Input.mousePosition.x + notificationOffset.x) / idCanvas.scaleFactor, (Input.mousePosition.y + notificationOffset.y) / idCanvas.scaleFactor);
+        newNotificationT.anchoredPosition = new Vector2((Input.mousePosition.x + notificationOffset.x * Screen.width) / idCanvas.scaleFactor, (Input.mousePosition.y + notificationOffset.y * Screen.height) / idCanvas.scaleFactor);
         TrackerNotificationController newNotificationC = newNotification.GetComponent<TrackerNotificationController>();
         newNotificationC.SpawnInit(text, displayTime, upwardSpeed);
     }

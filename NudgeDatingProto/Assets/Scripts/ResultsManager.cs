@@ -1,29 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using UnityEngine.Networking;
-using UnityEngine.Windows;
-using Unity.VisualScripting;
 
 public class ResultsManager : MonoBehaviour
 {
     public static ResultsManager instance;
-
-    [SerializeField] private TextMeshProUGUI titleTextObject;
-    [SerializeField] private TextMeshProUGUI thanksTextObjectOne;
-    [SerializeField] private TextMeshProUGUI thanksTextObjectTwo;
-    [SerializeField][TextArea(0, 40)] private string titleText;
-    [SerializeField][TextArea(0, 40)] private string thanksTextOne;
-    [SerializeField][TextArea(0, 40)] private string thanksTextTwo;
-    [SerializeField] private TextMeshProUGUI contactText;
-    [SerializeField] private TextMeshProUGUI datingPoolText;
+    
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI UITitleTextObject;
+    [SerializeField] private TextMeshProUGUI UISubTitleTextObject;
+    [SerializeField] private TextMeshProUGUI UIInfoTextObject;
+    [SerializeField][TextArea(0, 40)] private string UITitleText;
+    [SerializeField][TextArea(0, 40)] private string UISubTitleText;
+    [SerializeField][TextArea(0, 40)] private string UIInfoText;
+    [SerializeField] private TextMeshProUGUI UIContactTagTextObject;
+    [SerializeField] private TextMeshProUGUI UIDatingPoolTagTextObject;
 
     [SerializeField] private TMP_InputField emailFieldMain;
     [SerializeField] private Toggle contactToggle;
@@ -36,10 +30,11 @@ public class ResultsManager : MonoBehaviour
     [SerializeField] private TMP_InputField emailFieldAction;
     [SerializeField] private TMP_InputField nameFieldAction;
 
+
     private string htmlStart = @"
         <html>
             <head>
-                <title>clickedy.click @ IMPAKT</title>
+                <title>clickedy.click @CPDP.ai</title>
                   <style>
                     body {
                         font-family: Arial, Helvetica, sans-serif;
@@ -53,44 +48,47 @@ public class ResultsManager : MonoBehaviour
         </html>
     ";
 
-    [SerializeField] private string ownIdPlaceholder;
-    [SerializeField] private string ownEmailPlaceholderMain;
-    [SerializeField] private string ownEmailPlaceholderAction;
-    [SerializeField] private string otherIdPlaceholder;
-    [SerializeField] private string otherEmailPlaceholder;
-    [SerializeField] private string namePlaceholder;
+    [Header("Text Placeholders")]
+    [SerializeField] private string userIdPlaceholder;
+    [SerializeField] private string userEmailPlaceholderUser;
+    [SerializeField] private string userEmailPlaceholderAction;
+    [SerializeField] private string matchedIdPlaceholder;
+    [SerializeField] private string matchedEmailPlaceholder;
+    [SerializeField] private string actionNamePlaceholder;
 
-    [SerializeField] private string fromAddressMain = "your_email_address";
-    [SerializeField] private string fromDisplayName = "your_display_name";
-    private MailAddress fromMailAdressMain;
-    private MailAddress fromMailAdressAction;
-    private string toAddressMain;
-    private string toAddressOther;
-    private string toAddressAction;
-    private string nameAction;
+    [Header("User Mail")]
+    private string userToAdress;
+    private string userID;
+    private MailAddress clickedyMailAdressDating;
+    [SerializeField] private string clickedyAddressDating = "your_email_address";
+    [SerializeField] private string clickedyDisplayNameDating = "your_display_name";
+    [SerializeField] private string userMailSubject = "Email subject";
+    [SerializeField][TextArea(0, 40)] private string userMailOpeningParagraph;
+    [SerializeField][TextArea(0, 40)] private string userMailConnectOptionParagraph;
+    [SerializeField][TextArea(0, 40)] private string userMailDatingPoolOptionParagraph;
+    [SerializeField][TextArea(0, 40)] private string userMailClosingParagraph;
+    private string emailBodyUser;
 
-    [SerializeField] private string subjectMain = "Email subject";
-    [SerializeField][TextArea(0, 40)] private string thanksParagraph;
-    [SerializeField][TextArea(0, 40)] private string connectParagraph;
-    [SerializeField][TextArea(0, 40)] private string addedParagraph;
-    [SerializeField][TextArea(0, 40)] private string endingParagraph;
-    [SerializeField] private string subjectOther = "Email subject";
-    [SerializeField][TextArea(0, 40)] private string connectedEmail;
+    [Header("Matched Mail")]
+    private string matchedToAdress;
+    private string matchedID;
+    [SerializeField] private string matchedMailSubject = "Email subject";
+    [SerializeField][TextArea(0, 40)] private string matchedMailAllParagraph;
+    private string emailBodyMatched;
 
-
-    [SerializeField] private string fromAddressAction = "your_email_address";
-    [SerializeField] private string subjectAction = "Email subject";
-    [SerializeField][TextArea(0, 40)] private string actionParagraph;
-
-    private string matchedUserID;
+    [Header("Action Mail")]
+    private string actionToAdress;
+    private string actionName;
+    private MailAddress clickedyMailAdressAction;
+    [SerializeField] private string clickedyAddressAction = "your_email_address";
+    [SerializeField] private string clickedyDisplayNameAction = "your_display_name";
+    [SerializeField] private string actionMailSubject = "Email subject";
+    [SerializeField][TextArea(0, 40)] private string actionMailAllParagraph;
+    private string emailBodyAction;
 
 
     private RouterManager routerManager;
     private NewDataManager dataManager;
-
-    private string emailBodyMain;
-    private string emailBodyOther;
-    private string emailBodyAction;
 
     private void Awake()
     {
@@ -104,31 +102,58 @@ public class ResultsManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //TestMailOnStart();
+    }
+
+    private void TestMailOnStart()
+    {
+        //Test email
+        routerManager = RouterManager.instance;
+        dataManager = NewDataManager.instance;
+
+        matchedID = "123456";
+        userID = "987654";
+        matchedToAdress = "hey@leonvanoldenborgh.nl";
+
+        clickedyMailAdressDating = new MailAddress(clickedyAddressDating, clickedyDisplayNameDating);
+        clickedyMailAdressAction = new MailAddress(clickedyAddressAction, clickedyDisplayNameAction);
+
+        emailBodyUser = "";
+        emailBodyMatched = "";
+        emailBodyAction = "";
+
+        UITitleTextObject.text = ReplacePlaceholders(UITitleText);
+        UISubTitleTextObject.text = ReplacePlaceholders(UISubTitleText);
+        UIInfoTextObject.text = ReplacePlaceholders(UIInfoText);
+
+        UIContactTagTextObject.text = $"I want to get into contact with user #{matchedID}";
+        UIDatingPoolTagTextObject.text = $"I want to get added to the clickedy.click dating pool as user #{userID}";
+    }
+
     public void Initialise()
     {
         routerManager = RouterManager.instance;
         dataManager = NewDataManager.instance;
 
-        matchedUserID = dataManager.matchedProfileData.id.Substring(dataManager.matchedProfileData.id.Length - 6);
+        matchedID = dataManager.matchedProfileData.id.Substring(dataManager.matchedProfileData.id.Length - 6);
+        userID = dataManager.ownProfileData.id.Substring(dataManager.matchedProfileData.id.Length - 6);
+        matchedToAdress = dataManager.matchedProfileData.email;
 
-        fromMailAdressMain = new MailAddress(fromAddressMain, fromDisplayName);
-        fromMailAdressAction = new MailAddress(fromAddressAction, fromDisplayName);
+        clickedyMailAdressDating = new MailAddress(clickedyAddressDating, clickedyDisplayNameDating);
+        clickedyMailAdressAction = new MailAddress(clickedyAddressAction, clickedyDisplayNameAction);
 
-        emailBodyMain = "";
-        emailBodyOther = "";
+        emailBodyUser = "";
+        emailBodyMatched = "";
         emailBodyAction = "";
 
-        string modifiedTitleText = titleText.Replace(ownIdPlaceholder, dataManager.ownProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6));
-        titleTextObject.text = modifiedTitleText.Replace(otherIdPlaceholder, matchedUserID);
+        UITitleTextObject.text = ReplacePlaceholders(UITitleText);
+        UISubTitleTextObject.text = ReplacePlaceholders(UISubTitleText);
+        UIInfoTextObject.text = ReplacePlaceholders(UIInfoText);
 
-        string modifiedThanksTextOne = thanksTextOne.Replace(ownIdPlaceholder, dataManager.ownProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6));
-        thanksTextObjectOne.text = modifiedThanksTextOne.Replace(otherIdPlaceholder, matchedUserID);
-        
-        string modifiedThanksTextTwo = thanksTextTwo.Replace(ownIdPlaceholder, dataManager.ownProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6));
-        thanksTextObjectTwo.text = modifiedThanksTextTwo.Replace(otherIdPlaceholder, matchedUserID);
-
-        contactText.text = $"I want to get into contact with user #{matchedUserID}";
-        datingPoolText.text = $"I want to get added to the clickedy.click dating pool as user #{dataManager.ownProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6)}";
+        UIContactTagTextObject.text = $"I want to get into contact with user #{matchedID}";
+        UIDatingPoolTagTextObject.text = $"I want to get added to the clickedy.click dating pool as user #{userID}";
     }
 
     public void CheckToggleGraphics()
@@ -141,99 +166,103 @@ public class ResultsManager : MonoBehaviour
 
     public void OnConfirmMainLocal()
     {
-        toAddressMain = emailFieldMain.text;
-        if (!IsValidEmail(toAddressMain)) { return; }
+        userToAdress = emailFieldMain.text;
+        if (!IsValidEmail(userToAdress)) { return; }
 
-        if(!contactToggle && !datingPoolText) { return; }
+        if(!contactToggle.isOn && !datingPoolToggle.isOn) { return; }
 
-        emailBodyMain += htmlStart;
+        emailBodyUser += htmlStart;
 
-        emailBodyMain += thanksParagraph;
+        emailBodyUser += userMailOpeningParagraph;
 
         if (contactToggle.isOn)
         {
-            emailBodyMain += connectParagraph; 
+            emailBodyUser += userMailConnectOptionParagraph; 
         }
 
         if (datingPoolToggle.isOn)
         {
-            emailBodyMain += addedParagraph;
+            emailBodyUser += userMailDatingPoolOptionParagraph;
 
-            dataManager.ownProfileData.email = toAddressMain;
+            dataManager.ownProfileData.email = userToAdress;
 
-            dataManager.SaveUserDataLocal(dataManager.ownProfileData);
+            //dataManager.SaveUserDataLocal(dataManager.ownProfileData);
 
-            SendOtherMail();
+            SendMatchedMail();
         }
 
-        emailBodyMain += htmlEnd;
+        emailBodyUser += userMailClosingParagraph;
 
-        emailBodyMain = ReplacePlaceholders(emailBodyMain);
+        emailBodyUser += htmlEnd;
 
-        MailAddress toMailAdress = new MailAddress(toAddressMain);
+        string finalUserMailText = ReplacePlaceholders(emailBodyUser);
 
-        MailMessage message = new MailMessage(fromMailAdressMain, toMailAdress);
+        MailAddress toMailAdress = new MailAddress(userToAdress);
+
+        MailMessage message = new MailMessage(clickedyMailAdressDating, toMailAdress);
         message.IsBodyHtml = true;
-        message.Subject = subjectMain;
-        message.Body = emailBodyMain;
+        message.Subject = userMailSubject;
+        message.Body = finalUserMailText;
+        Debug.Log(finalUserMailText);
         SmtpClient smtpClient = new SmtpClient("mail.antagonist.nl", 587);
         smtpClient.EnableSsl = true;
-        smtpClient.Credentials = new NetworkCredential("clickedy.click@leonvanoldenborgh.nl", "WildClicker");
+        smtpClient.Credentials = new NetworkCredential("clickedy.click@leonvanoldenborgh.nl", "wildclicker");
         smtpClient.Send(message);
 
         //Reset input field and toggles
         contactToggle.isOn = false;
         datingPoolToggle.isOn = false;
         emailFieldMain.text = "Email sent succesfully!";
+        emailBodyUser = "";
     }
 
-    public void SendOtherMail()
+    public void SendMatchedMail()
     {
-        toAddressOther = dataManager.matchedProfileData.email;
-        if (!IsValidEmail(toAddressOther)) { return; }
+        if (!IsValidEmail(matchedToAdress)) { return; }
 
-        emailBodyOther += htmlStart;
+        emailBodyMatched += htmlStart;
 
-        emailBodyOther += addedParagraph;
+        emailBodyMatched += matchedMailAllParagraph;
 
-        emailBodyOther += htmlEnd;
+        emailBodyMatched += htmlEnd;
 
-        emailBodyOther = ReplacePlaceholders(emailBodyOther);
+        string finalMatchedMailText = ReplacePlaceholders(emailBodyMatched);
 
-        MailAddress toMailAdress = new MailAddress(toAddressOther);
+        MailAddress toMailAdress = new MailAddress(matchedToAdress);
 
-        MailMessage message = new MailMessage(fromMailAdressMain, toMailAdress);
+        MailMessage message = new MailMessage(clickedyMailAdressDating, toMailAdress);
         message.IsBodyHtml = true;
-        message.Subject = subjectOther;
-        message.Body = emailBodyOther;
+        message.Subject = matchedMailSubject;
+        message.Body = finalMatchedMailText;
+        Debug.Log(finalMatchedMailText);
         SmtpClient smtpClient = new SmtpClient("mail.antagonist.nl", 587);
         smtpClient.EnableSsl = true;
         smtpClient.Credentials = new NetworkCredential("clickedy.click@leonvanoldenborgh.nl", "wildclicker");
         smtpClient.Send(message);
+        emailBodyMatched = "";
     }
 
     public void OnConfirmAction()
     {
-        toAddressAction = emailFieldAction.text;
-        nameAction = nameFieldAction.text;
-        if (!IsValidEmail(toAddressAction)) { return; }
-
-        if (!contactToggle && !datingPoolText) { return; }
+        actionToAdress = emailFieldAction.text;
+        actionName = nameFieldAction.text;
+        if (!IsValidEmail(actionToAdress)) { return; }
 
         emailBodyAction += htmlStart;
 
-        emailBodyAction += actionParagraph;
+        emailBodyAction += actionMailAllParagraph;
 
         emailBodyAction += htmlEnd;
 
-        emailBodyAction = ReplacePlaceholders(emailBodyAction);
+        string finalActionMailText = ReplacePlaceholders(emailBodyAction);
 
-        MailAddress toMailAdress = new MailAddress(toAddressAction);
+        MailAddress toMailAdress = new MailAddress(actionToAdress);
 
-        MailMessage message = new MailMessage(fromMailAdressAction, toMailAdress);
+        MailMessage message = new MailMessage(clickedyMailAdressAction, toMailAdress);
         message.IsBodyHtml = true;
-        message.Subject = subjectAction;
-        message.Body = emailBodyAction;
+        message.Subject = actionMailSubject;
+        message.Body = finalActionMailText;
+        Debug.Log(finalActionMailText);
         SmtpClient smtpClient = new SmtpClient("mail.antagonist.nl", 587);
         smtpClient.EnableSsl = true;
         smtpClient.Credentials = new NetworkCredential("clickedy.action@leonvanoldenborgh.nl", "wildclicker");
@@ -241,50 +270,8 @@ public class ResultsManager : MonoBehaviour
 
         emailFieldAction.text = "Email sent succesfully!";
         nameFieldAction.text = "...";
+        emailBodyAction = "";
     }
-
-    //public void OnConfirmNoDatabase()
-    //{
-    //    toAddress = emailField.text;
-    //    if (!IsValidEmail(toAddress)) { return; }
-
-    //    if (!contactToggle && !datingPoolText) { return; }
-
-    //    emailBody += htmlStart;
-
-    //    emailBody += emailTextStart;
-    //    emailBody += dataManager.currentUserData.id.Substring(dataManager.currentUserData.id.Length - 6);
-
-    //    emailBody += emailTextAfterID;
-
-    //    if (contactToggle.isOn) { emailBody += emailTextContact; }
-
-    //    if (datingPoolToggle.isOn)
-    //    {
-    //        emailBody += emailTextDatingPool;
-
-    //        dataManager.currentUserData.email = toAddress;
-    //    }
-
-    //    emailBody += emailTextEnd;
-    //    emailBody += htmlEnd;
-
-    //    MailAddress toMailAdress = new MailAddress(toAddress);
-
-    //    MailMessage message = new MailMessage(fromMailAdress, toMailAdress);
-    //    message.IsBodyHtml = true;
-    //    message.Subject = subject;
-    //    message.Body = emailBody;
-    //    SmtpClient smtpClient = new SmtpClient("mail.antagonist.nl", 587);
-    //    smtpClient.EnableSsl = true;
-    //    smtpClient.Credentials = new NetworkCredential("nudge.dating@leonvanoldenborgh.nl", "WildClicker");
-    //    smtpClient.Send(message);
-
-    //    //Reset input field and toggles
-    //    contactToggle.isOn = false;
-    //    datingPoolToggle.isOn = false;
-    //    emailField.text = "Email sent succesfully!";
-    //}
 
     private bool IsValidEmail(string email)
     {
@@ -295,42 +282,13 @@ public class ResultsManager : MonoBehaviour
     private string ReplacePlaceholders(string inputText)
     {
         string outputText;
-        outputText = inputText.Replace(ownIdPlaceholder, dataManager.ownProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6));
-        outputText = outputText.Replace(ownEmailPlaceholderMain, toAddressMain);
-        outputText = outputText.Replace(ownEmailPlaceholderAction, toAddressAction);
-        outputText = outputText.Replace(otherIdPlaceholder, dataManager.matchedProfileData.id.Substring(dataManager.ownProfileData.id.Length - 6));
-        outputText = outputText.Replace(otherEmailPlaceholder, dataManager.matchedProfileData.email);
-        outputText = outputText.Replace(namePlaceholder, nameAction);
+        outputText = inputText.Replace(userIdPlaceholder, userID);
+        outputText = outputText.Replace(userEmailPlaceholderUser, userToAdress);
+        outputText = outputText.Replace(userEmailPlaceholderAction, actionToAdress);
+        outputText = outputText.Replace(matchedIdPlaceholder, matchedID);
+        outputText = outputText.Replace(matchedEmailPlaceholder, matchedToAdress);
+        outputText = outputText.Replace(actionNamePlaceholder, actionName);
         return outputText;
     }
 
-    //public void HandleAfterUpload(UnityWebRequest.Result result)
-    //{
-    //    if (result != UnityWebRequest.Result.Success && result != UnityWebRequest.Result.ProtocolError)
-    //    {
-    //        emailBody += emailTextEnd;
-    //        emailBody += htmlEnd;
-
-    //        MailAddress toMailAdress = new MailAddress(toAddress);
-
-    //        MailMessage message = new MailMessage(fromMailAdress, toMailAdress);
-    //        message.IsBodyHtml = true;
-    //        message.Subject = subject;
-    //        message.Body = emailBody;
-    //        SmtpClient smtpClient = new SmtpClient("mail.antagonist.nl", 587);
-    //        smtpClient.EnableSsl = true;
-    //        smtpClient.Credentials = new NetworkCredential("nudge.dating@leonvanoldenborgh.nl", "WildClicker");
-    //        smtpClient.Send(message);
-
-    //        //Reset input field and toggles
-    //        contactToggle.isOn = false;
-    //        datingPoolToggle.isOn = false;
-    //        emailField.text = "Email sent succesfully!";
-    //    }
-    //    else
-    //    {
-    //        //Sucks, enable retry uploading button?
-    //        //Maybe handle dirty data and wrong email exceptions seperately
-    //    }
-    //}
 }
