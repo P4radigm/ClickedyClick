@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CursorIconManager : MonoBehaviour
 {
     public static CursorIconManager instance = null;
 
-    [SerializeField] private Texture2D[] cursors;
+    [SerializeField] private Image cursorSprite;
+    [SerializeField] private Sprite[] cursors;
     [SerializeField] private Vector2 offsetVector;
     [HideInInspector] public bool isHovering = false;
     public int targetCursorState;
@@ -42,8 +44,11 @@ public class CursorIconManager : MonoBehaviour
 
     private void Update()
     {
-        Cursor.SetCursor(isHovering == false ? cursors[0] : cursors[targetCursorState], offsetVector, CursorMode.Auto);
+        Cursor.visible = false;
+
+        cursorSprite.sprite = isHovering == false ? cursors[0] : cursors[targetCursorState];
         currentCursorState = isHovering ? targetCursorState : 0;
         isHovering = false;
+
     }
 }

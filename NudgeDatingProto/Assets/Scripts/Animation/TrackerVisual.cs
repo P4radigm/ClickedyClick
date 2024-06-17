@@ -24,6 +24,10 @@ public class TrackerVisual : MonoBehaviour
     [SerializeField] private float dwindleDuration;
     [SerializeField] private AnimationCurve dwindleCurve;
 
+    [Header("Cursor Options")]
+    [SerializeField] private RectTransform cursorElement;
+    [SerializeField] private Vector2 cursorOffset;
+
     [Header("User ID Tag Options")]
     [SerializeField] private RectTransform userIdElement;
     [SerializeField] private TextMeshProUGUI idText;
@@ -81,6 +85,7 @@ public class TrackerVisual : MonoBehaviour
     {
         UpdateFollowLine();
         UpdateIdTagPosition();
+        UpdateCursorPosition();
 
         //click
         // drag & drop - Vector2
@@ -128,6 +133,11 @@ public class TrackerVisual : MonoBehaviour
     private void UpdateIdTagPosition()
     {
         userIdElement.anchoredPosition = new Vector2((Input.mousePosition.x + idOffset.x * Screen.width) / idCanvas.scaleFactor, (Input.mousePosition.y + idOffset.y * Screen.height) / idCanvas.scaleFactor);
+    }
+
+    private void UpdateCursorPosition()
+    {
+        cursorElement.anchoredPosition = new Vector2((Input.mousePosition.x + cursorOffset.x * Screen.width) / idCanvas.scaleFactor, (Input.mousePosition.y + cursorOffset.y * Screen.height) / idCanvas.scaleFactor);
     }
 
     private void CheckForMouseNotificationOutput()
